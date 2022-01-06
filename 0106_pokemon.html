@@ -40,13 +40,26 @@
             container.appendChild(img);
         }
 
+        function fetchPokemon(){
+            let pokemons = '';
+
+            for(let i = 1; i < 89; i++){
+                let fileNum = i.toString().padStart(3,'0');
+                let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
+                let pokemonImg = `<img src="${imgUrl}">`;
+                pokemons += pokemonImg;
+
+                container.innerHTML = pokemons;
+            }
+        }
+
         //方式1:for迴圈 ＋ Element.innerHTML設定HTML字串
         var fetchPokemon2 = document.querySelector('.btn:nth-of-type(2)');
 
         fetchPokemon2.onclick = () => {
             let pokemons = '';
 
-            for(let i = 1; i < 890; i++){
+            for(let i = 1; i < 89; i++){
                 let fileNum = i.toString().padStart(3,'0');
                 let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
                 let pokemonImg = `<img src="${imgUrl}">`;
@@ -63,7 +76,7 @@
             let pokemons = '';
             container.innerHTML = '';
 
-            for(let i = 1; i < 890; i++){
+            for(let i = 1; i < 89; i++){
                 let fileNum = i.toString().padStart(3,'0');
                 let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
 
@@ -75,7 +88,10 @@
         })
 
         function resetPokemon() {
-            setPokemon();
+            // setPokemon();
+            while(container.firstChild){
+                container.removeChild(container.firstChild);
+            }
         }
     </script>
 </body>
