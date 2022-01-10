@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <title>2021年全球晶圓代工市佔率</title>
+    </head>
+    <body>
+        <canvas id="mkShare"></canvas>
+        <div id="container" class="container"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"
+        integrity="sha512-G8JE1Xbr0egZE5gNGyUm1fF764iHVfRXshIoUWCTPAbKkkItp/6qal5YAHXrxEu4HNfPTQs6HOu3D5vCGS1j3w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+        
+            let titles = ['排名', '公司', '國別', '市占率%'];
+            let data = [
+                {
+                    ranking: 1,
+                    name: '台積電',
+                    country: '台灣',
+                    percentage: '53.1',
+                },
+                {
+                    ranking: 2,
+                    name: '三星電子',
+                    country: '南韓',
+                    percentage: '17.3',
+                },
+                {
+                    ranking: 3,
+                    name: '聯電',
+                    country: '台灣',
+                    percentage: '7.2',
+                },
+                {
+                    ranking: 4,
+                    name: '格羅方德',
+                    country: '美國',
+                    percentage: '6.1',
+                },
+                {
+                    ranking: 5,
+                    name: '中芯國際',
+                    country: '中國',
+                    percentage: '5.3',
+                },
+                {
+                    ranking: 6,
+                    name: '華虹半導體',
+                    country: '中國',
+                    percentage: '2.6',
+                },
+                {
+                    ranking: 7,
+                    name: '力積電',
+                    country: '台灣',
+                    percentage: '1.8',
+                },
+                {
+                    ranking: 8,
+                    name: '世界先進',
+                    country: '台灣',
+                    percentage: '1.4',
+                },
+                {
+                    ranking: 9,
+                    name: '高塔半導體',
+                    country: '以色列',
+                    percentage: '1.4',
+                },
+                {
+                    ranking: 10,
+                    name: '東部高科',
+                    country: '南韓',
+                    percentage: '1',
+                },
+            ];
+
+            let table = document.createElement('table');
+            table.setAttribute("class", "table table-bordered table-striped");
+            let thead = document.createElement('thead');
+            let tbody = document.createElement('tbody');
+            let companies = [];
+            let companyData = [];
+
+            window.onload = () => {
+                // thead
+                let theadTr = document.createElement('tr');
+            
+                titles.forEach((title => {
+                    let th = document.createElement('th');
+                    th.innerText = title;
+
+                    theadTr.appendChild(th);
+                }))
+
+                table.appendChild(theadTr);
+
+                // tbody
+                data.forEach((item, index) => {
+                    let tbodyTr = document.createElement('tr');
+
+                    for(let i=0; i < (Object.values(item)).length; i++){
+                        let td = document.createElement('td');
+                        td.innerText = Object.values(item)[i];
+                        tbodyTr.appendChild(td);
+                    }
+                    table.appendChild(tbodyTr)
+
+                    // 圖表用陣列
+                    companies.push(item['name']);
+                    companyData.push(item['percentage'])
+                })
+
+                document.getElementById('container').appendChild(table);
+
+                // chart
+
+                console.log(companies);
+                console.log(companyData);
+                drawPieChart(companies,companyData);
+            };
+
+            //Pie Chart圓餅圖
+
+            function drawPieChart(titleArray, dataArray) {
+                let ctxPie = document.getElementById("mkShare");
+                var pieChart = new Chart(ctxPie, {
+                    type: 'pie',
+                    data: {
+                        labels: titleArray,
+                        datasets: [{
+                            data: dataArray,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(255,75,50)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(54, 162, 235)',
+                                'rgb(153, 102, 255)',
+                                'rgb(201, 203, 207)',
+                                'rgb(255, 138, 64)',
+                                'rgb(142, 65, 64)',
+                                'rgb(59, 72, 64)'
+                            ]
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            fontSize: 26,
+                            text: '2021年全球晶圓代工市佔率%'
+                        },
+                        tooltips: {
+                            mode: 'point',
+                            intersect: true,
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                fontColor: 'black',
+                            }
+                        }
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
