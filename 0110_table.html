@@ -87,11 +87,11 @@
             let companies = [], companyData = [];
 
             window.onload = () => {
-                // chart
-                drawPieChart(companies,companyData);
-
                 createTable()
                 document.getElementById('container').appendChild(table);
+                
+                // chart
+                drawPieChart(companies,companyData);
             };
 
             function createTable(){
