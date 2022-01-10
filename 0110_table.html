@@ -87,7 +87,14 @@
             let companies = [], companyData = [];
 
             window.onload = () => {
+                // chart
+                drawPieChart(companies,companyData);
 
+                createTable()
+                document.getElementById('container').appendChild(table);
+            };
+
+            function createTable(){
                 // thead
                 let theadTr = document.createElement('tr');
             
@@ -116,12 +123,7 @@
                     companies.push(item['name']);
                     companyData.push(item['percentage'])
                 })
-
-                document.getElementById('container').appendChild(table);
-
-                // chart
-                drawPieChart(companies,companyData);
-            };
+            }
 
             //Pie Chart圓餅圖
 
