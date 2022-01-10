@@ -10,6 +10,7 @@
     <body>
         <canvas id="mkShare"></canvas>
         <div id="container" class="container"></div>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"
         integrity="sha512-G8JE1Xbr0egZE5gNGyUm1fF764iHVfRXshIoUWCTPAbKkkItp/6qal5YAHXrxEu4HNfPTQs6HOu3D5vCGS1j3w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -83,10 +84,10 @@
             table.setAttribute("class", "table table-bordered table-striped");
             let thead = document.createElement('thead');
             let tbody = document.createElement('tbody');
-            let companies = [];
-            let companyData = [];
+            let companies = [], companyData = [];
 
             window.onload = () => {
+
                 // thead
                 let theadTr = document.createElement('tr');
             
@@ -108,6 +109,7 @@
                         td.innerText = Object.values(item)[i];
                         tbodyTr.appendChild(td);
                     }
+
                     table.appendChild(tbodyTr)
 
                     // 圖表用陣列
@@ -118,9 +120,6 @@
                 document.getElementById('container').appendChild(table);
 
                 // chart
-
-                console.log(companies);
-                console.log(companyData);
                 drawPieChart(companies,companyData);
             };
 
