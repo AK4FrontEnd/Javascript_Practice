@@ -15,6 +15,9 @@
     <button class="btn" onclick='fetchOne()'>加一</button>
     <button id='reset' onclick="resetPokemon()">Reset</button>
 
+    <!-- <button id="timer"> Timer</button>
+    <button id="stop">Stop Timer</button> -->
+
     <div id='container'></div>
 
     <script>
@@ -45,7 +48,7 @@
         function fetchPokemon(){
             let pokemons = '';
 
-            for(let i = 1; i < 890; i++){
+            for(let i = 1; i < 89; i++){
                 let fileNum = i.toString().padStart(3,'0');
                 let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
                 let pokemonImg = `<img src="${imgUrl}">`;
@@ -61,13 +64,15 @@
         fetchPokemon2.onclick = () => {
             let pokemons = '';
 
-            for(let i = 1; i < 890; i++){
+            for(let i = 1; i < 89; i++){
                 let fileNum = i.toString().padStart(3,'0');
                 let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
                 let pokemonImg = `<img src="${imgUrl}">`;
                 pokemons += pokemonImg;
 
                 container.innerHTML = pokemons;
+
+                // img.addEventListener("click", removeImg);
             }
         }
 
@@ -78,7 +83,7 @@
             let pokemons = '';
             container.innerHTML = '';
 
-            for(let i = 1; i < 890; i++){
+            for(let i = 1; i < 89; i++){
                 let fileNum = i.toString().padStart(3,'0');
                 let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
 
@@ -86,6 +91,7 @@
                 img.src = imgUrl;
                 
                 container.appendChild(img);
+                // img.addEventListener("click", removeImg);
             }
         })
 
@@ -107,6 +113,33 @@
             }
             pokemonNumber = 1;
         }
+
+        // function removeImg(event){
+        //     container.removeChild(event.target);
+        // }
+
+        // let intervalId;
+        // let timer = document.getElementById('timer');
+        // timer.addEventListener('click', function(){
+        //     intervalId = setInterval(addPokemon, 500);
+        // })
+
+        // let stop = document.getElementById('stop');
+        // stop.addEventListener('click', function(){
+        //     clearInterval(intervalId);
+        // })
+
+        // function addPokemon(){
+        //     let img = document.createElement('img');
+        //     let pokemonNum = pokemonNumber.toString().padStart(3, '0');
+        //     img.setAttribute('src', `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonNum}.png`);
+
+        //     img.setAttribute('id' = pokemonNum);
+        //     img.addEventListener('click', removeImg);
+
+        //     container.appendChild(img);
+        //     pokemonNum++;
+        // }
     </script>
 </body>
 
