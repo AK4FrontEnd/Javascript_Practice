@@ -31,41 +31,48 @@
                         </li>
                     </ul> -->
                 </div>
-                <div class="col pt-5">
+                <div class="col pt-5 accordion" id="accordion">
+
                     <!-- 選擇前：wrap、選擇後：wrap-selected -->
-                    <div class="color wrap mb-4" id="color">
-                        <p class="option-title">外觀</p>
-                        <!-- <button class="btn-edit">更改</button> -->
-                        <div class="options d-flex flex-wrap">
-                            <!-- 用迴圈跑
-                            <button class="options-card">
-                                文字、圖片、info
+                    <div class="color wrap accordion-item" id="color">
+                        <p class="option-title accordion-header d-flex" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button collapsed">
+                                外觀
+                                <button class="btn-edit" type="button" aria-expanded="true"  data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-controls="panelsStayOpen-collapseOne">更改</button>
                             </button>
-                            -->
+                        </p>
+                        <!-- <button class="btn-edit">更改</button> -->
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                            <div class="options d-flex flex-wrap accordion-body">
+                            </div>
                         </div>
                     </div>
-                    <div class="storage wrap mb-4" id="storage">
-                        <p class="option-title">儲存裝置</p>
-                        <p class="option-description">提前為日後預留空間。你的 iPad 儲存空間愈大，你就有愈多空間儲存數位內容，滿足現在和未來所需。</p>
-                        <!-- <button class="btn-edit">更改</button> -->
-                        <div class="options d-flex flex-wrap">
-                            <!-- 用迴圈跑
-                            <button class="options-card">
-                                文字、圖片、info
+
+                    <div class="storage wrap accordion-item" id="storage">
+                        <p class="option-title accordion-header d-flex" id="panelsStayOpen-headingTwo">
+                            <button class="accordion-button collapsed">
+                                儲存裝置
+                                <button class="btn-edit" type="button" aria-expanded="true"  data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-controls="panelsStayOpen-collapseTwo">更改</button>
                             </button>
-                            -->
+                        </p>
+                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo" data-bs-parent="#accordion">
+                            <p class="option-description">提前為日後預留空間。你的 iPad 儲存空間愈大，你就有愈多空間儲存數位內容，滿足現在和未來所需。</p>
+                            <div class="options d-flex flex-wrap accordion-body">
+                            </div>
                         </div>
                     </div>
-                    <div class="wifi wrap mb-4" id="wifi">
-                        <p class="option-title">連線能力</p>
-                        <p class="option-description">兩種快速的方式，讓你時時保持聯繫。每部 iPad 都可連接到 Wi-Fi 網路。Wi-Fi + 行動網路機型則讓你在無法使用 Wi-Fi 時，也能連上線。</p>
-                        <!-- <button class="btn-edit">更改</button> -->
-                        <div class="options d-flex flex-wrap">
-                            <!-- 用迴圈跑
-                            <button class="options-card">
-                                文字、圖片、info
+
+                    <div class="wifi wrap accordion-item" id="wifi">
+                        <p class="option-title accordion-header d-flex" id="panelsStayOpen-headingThree">
+                            <button class="accordion-button collapsed">
+                                連線能力
+                                <button class="btn-edit" type="button" aria-expanded="true"  data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-controls="panelsStayOpen-collapseThree">更改</button>
                             </button>
-                            -->
+                        </p>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingThree" data-bs-parent="#accordion">
+                            <p class="option-description">兩種快速的方式，讓你時時保持聯繫。每部 iPad 都可連接到 Wi-Fi 網路。Wi-Fi + 行動網路機型則讓你在無法使用 Wi-Fi 時，也能連上線。</p>
+                            <div class="options d-flex flex-wrap accordion-body">
+                            </div>
                         </div>
                     </div>
                     <div class="price-area disable">
@@ -92,33 +99,38 @@
 
             function selectColor(e){
                 // Q: 有時候抓不到圖片？
-
                 let img = e.target.dataset.productImg;
                 if(img != undefined){
                     projectImg.setAttribute('src', img);
-                    collapseWrap(0, e.target.innerText);
+                    selectItem(0, e.currentTarget.dataset.spec);
                 }
             }
             function selectStorage(e){
                 sumPrice = parseInt(e.currentTarget.dataset.price);
                 res.innerText = `NT $${sumPrice} 起`;
 
-                collapseWrap(1, e.currentTarget.querySelector('.title').innerText);
+                selectItem(1, e.currentTarget.dataset.spec);
             }
             function selectWifi(e){
                 sumPrice += parseInt(e.currentTarget.dataset.price);
                 res.innerText = `NT $${sumPrice}`;
 
-                collapseWrap(2, e.currentTarget.querySelector('.title').innerText);
+                selectItem(2, e.currentTarget.dataset.spec);
             }
-            function collapseWrap(index, title){
+            function selectItem(index, title){
                 let wrapArray = ["color", "storage", "wifi"];
                 let wrap = document.querySelector(`#${wrapArray[index]}`);
-                wrap.querySelector('.option-title').innerText = title;
+                let editBtn = document.querySelector('.btn-edit');
+                wrap.querySelector('.option-title>button').innerText = title;
                 wrap.classList.add('selected');
+                
                 // 折疊效果
+                wrap.querySelector('.accordion-collapse').classList.remove('show');
+                // editBtn.classList.remove('d-none');
                 // 更改按鈕
+
                 // anchor next wrap
+
             } 
         </script>
         <script type="module">
