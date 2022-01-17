@@ -90,6 +90,7 @@
 
             let queryColor, queryStorage, queryNetwork;
             let queryList = [queryColor, queryStorage, queryNetwork];
+            let queryRes;
 
             let productImage;
         </script>
@@ -101,6 +102,7 @@
                 ipadData = data;
                 optionsList = select('.options');
                 productImage = select('.product-img>img');
+                queryRes = ipadData;
 
                 getSpecData();
                 createSpecCard();
@@ -202,26 +204,20 @@
             function findIpads(e){
                 let specCategory = e.path[3].id;
                 let spec = e.target.dataset.spec;
+
                 if(specCategory == "color"){
                     queryColor = spec;
+                    queryRes = queryRes.filter(x => x.color.colorName == queryColor);
                 }else if(specCategory == "storage"){
                     queryStorage = spec;
+                    queryRes = queryRes.filter(x => x.storage == queryStorage);
                 }else{
                     queryNetwork = spec;
+                    queryRes = queryRes.filter(x => x.network == queryNetwork);
                 }
-
-                let query = ipadData.filter((item)=>{
-                    queryList.forEach((query,idx) => {
-                        if(query != undefined){
-                            console.log(item);
-                            if(item[specCategory] == query){
-                                console.log(item);
-                            }
-                        }
-                    })
-                });
-                console.log(query);
-
+                // queryRes = queryRes.filter(x => x.color.colorName == queryColor && x.storage == queryStorage && x.network == queryNetwork);
+                console.log(queryRes);
+                // document.querySelector('.result-price').innerText = `NT ${queryRes[0].price}`;
             }
         </script>
     </body>
