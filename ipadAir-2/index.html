@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="reset.css">
+        <link rel="stylesheet" href="style.css">
+        <title>iPad Air</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="col">
+                    <div class="product-img">
+                        <img class="w-100" src="./images/defaultImg.jpeg" alt="">
+                    </div>
+                </div>
+                <div class="col pt-5 accordion" id="accordion">
+
+                    <!-- 選擇前：wrap、選擇後：wrap-selected -->
+                    <div class="color wrap accordion-item" id="color">
+                        <p class="option-title accordion-header d-flex" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button collapsed">
+                                外觀
+                                <button class="btn-edit" type="button" aria-expanded="true"  data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-controls="panelsStayOpen-collapseOne">更改</button>
+                            </button>
+                        </p>
+                        <!-- <button class="btn-edit">更改</button> -->
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                            <div class="options d-flex flex-wrap accordion-body">
+                                <!-- Options -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="storage wrap accordion-item" id="storage">
+                        <p class="option-title accordion-header d-flex" id="panelsStayOpen-headingTwo">
+                            <button class="accordion-button collapsed">
+                                儲存裝置
+                                <button class="btn-edit" type="button" aria-expanded="true"  data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-controls="panelsStayOpen-collapseTwo">更改</button>
+                            </button>
+                        </p>
+                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo" data-bs-parent="#accordion">
+                            <p class="option-description">提前為日後預留空間。你的 iPad 儲存空間愈大，你就有愈多空間儲存數位內容，滿足現在和未來所需。</p>
+                            <div class="options d-flex flex-wrap accordion-body">
+                                <!-- Options -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="network wrap accordion-item" id="network">
+                        <p class="option-title accordion-header d-flex" id="panelsStayOpen-headingThree">
+                            <button class="accordion-button collapsed">
+                                連線能力
+                                <button class="btn-edit" type="button" aria-expanded="true"  data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-controls="panelsStayOpen-collapseThree">更改</button>
+                            </button>
+                        </p>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingThree" data-bs-parent="#accordion">
+                            <p class="option-description">兩種快速的方式，讓你時時保持聯繫。每部 iPad 都可連接到 Wi-Fi 網路。Wi-Fi + 行動網路機型則讓你在無法使用 Wi-Fi 時，也能連上線。</p>
+                            <div class="options d-flex flex-wrap accordion-body">
+                                <!-- Options -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price-area disable">
+                        <p class="result-price">NT 18,900 起</p>
+                        <div class="discount-plan">
+                            <p class="title">加入換購方案</p>
+                            <div class="description d-flex">
+                                <p class="info">Apple Trade In 換購方案
+                                    透過「Apple Trade In 換購方案」，以你符合條件的平板電腦換購，獲享折抵退款。你也可選擇免額外付費回收**。</p>
+                                <a href="" class="see-more">開始進行</a>
+                            </div>
+                        </div>
+                        <a href="" class="next">繼續</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+            let ipadData, optionsList;
+
+            let colorList = [];
+            let storageList = [];
+            let networkList = [];
+            let dataList = [colorList, storageList, networkList];
+
+            let queryColor, queryStorage, queryNetwork;
+            let queryList = [queryColor, queryStorage, queryNetwork];
+
+            let productImage;
+        </script>
+        <script type="module">
+            import {data} from './ipadAir.js';
+            import {create, select} from './functions.js';
+
+            window.onload = () => {
+                ipadData = data;
+                optionsList = select('.options');
+                productImage = select('.product-img>img');
+
+                getSpecData();
+                createSpecCard();
+            }
+            function getSpecData(){
+                ipadData.forEach((ipad, idx) => {
+                    let color = ipad.color.colorName;
+                    let storage = ipad.storage;
+                    let network = ipad.network;
+                    let arr = [color, storage, network];
+                    
+                    dataList.forEach((specArray, index) => {
+                        let res = specArray.find(x => x == arr[index]);
+                        if(res == undefined){
+                            specArray.push(arr[index]);
+                        }
+                    })
+                })
+                console.log(dataList);
+            }
+            function createSpecCard(){
+                optionsList.forEach((specWrap, idx) => {
+                    dataList[idx].forEach((item, index) => {
+                        // radio & label structure
+                        let optionBtn = create('input');
+                        Object.assign(optionBtn, {
+                            type: "radio",
+                            name: "options",
+                            id: `${item}-option${index}`,
+                            autocomplete: "off",
+                        })
+                        optionBtn.setAttribute('class', 'btn-check');
+                        optionBtn.setAttribute('data-spec', item);
+                        optionBtn.addEventListener('click', findIpads);
+
+                        let label = create('label');
+                        label.setAttribute('for', `${item}-option${index}`);
+                        label.setAttribute('class', 'options-card btn d-flex flex-column justify-content-center align-items-center');
+                        specWrap.append(optionBtn, label);
+
+                        // render label 裡的資料
+                        renderSpecData(specWrap, item, optionBtn, label);
+                    })
+                    console.log(specWrap);
+                })
+            }
+            function renderSpecData(specWrap, spec, optionBtn, label){
+                if((colorList.find(x => x == spec)) != undefined){
+                    // 外觀區域（有圖片）
+                    let imgUrl;
+                    let productImg;
+                    
+                    ipadData.forEach(ipad => {
+                        if(ipad.color.colorName == spec){
+                            imgUrl = ipad.color.colorImg;
+                            productImg = ipad.picture;
+                            console.log(imgUrl);
+                        }
+                    })
+                    optionBtn.setAttribute('data-product-img', productImg);
+                    // optionBtn.setAttribute('data-value', spec);
+                    optionBtn.addEventListener('click', selectColor);
+
+                    let img = create('img');
+                    img.src = imgUrl;
+                    img.setAttribute("class", "color-demo-img");
+
+                    let optionInfo = create('p');
+                    optionInfo.innerText = spec;
+                    optionInfo.setAttribute("class", "info-txt");
+
+                    label.appendChild(img);
+                    label.appendChild(optionInfo);
+
+                }else{
+                    // 儲存空間或網際網路
+                    
+                    let optionTitle = create('p');
+                    optionTitle.innerText = spec;
+                    optionTitle.setAttribute("class", "title");
+
+                    let optionInfo = create('p');
+                    optionInfo.innerText = `NT 18900 起`;
+                    optionInfo.setAttribute("class", "info-txt");
+
+                    label.appendChild(optionTitle);
+                    label.appendChild(optionInfo);
+                }
+                
+                specWrap.appendChild(optionBtn);
+                specWrap.appendChild(label);
+            }
+            function selectColor(e){
+                let img = e.target.dataset.productImg;
+                if(img != undefined){
+                    productImage.setAttribute('src', img);
+                }
+            }
+            function findIpads(e){
+                let specCategory = e.path[3].id;
+                let spec = e.target.dataset.spec;
+                if(specCategory == "color"){
+                    queryColor = spec;
+                }else if(specCategory == "storage"){
+                    queryStorage = spec;
+                }else{
+                    queryNetwork = spec;
+                }
+
+                let query = ipadData.filter((item)=>{
+                    queryList.forEach((query,idx) => {
+                        if(query != undefined){
+                            console.log(item);
+                            if(item[specCategory] == query){
+                                console.log(item);
+                            }
+                        }
+                    })
+                });
+                console.log(query);
+
+            }
+        </script>
+    </body>
+</html>
