@@ -5,7 +5,7 @@
         "price": 18900,
         "storage": "64GB",
         "network": "Wi-Fi",
-        "picture": "gray.png"
+        "picture": "./images/select-spacegray.png"
     },
     {
         "id": "A002",
@@ -13,7 +13,7 @@
         "price": 18900,
         "storage": "64GB",
         "network": "Wi-Fi",
-        "picture": "silver.png"
+        "picture": "./images/select-silver.png"
     },
     {
         "id": "A003",
@@ -21,7 +21,7 @@
         "price": 18900,
         "storage": "64GB",
         "network": "Wi-Fi",
-        "picture": "rose.png"
+        "picture": "./images/select-gold.png"
     },
     {
         "id": "A004",
@@ -29,7 +29,7 @@
         "price": 18900,
         "storage": "64GB",
         "network": "Wi-Fi",
-        "picture": "green.png"
+        "picture": "./images/select-green.png"
     },
     {
         "id": "A005",
@@ -37,7 +37,7 @@
         "price": 18900,
         "storage": "64GB",
         "network": "Wi-Fi",
-        "picture": "blue.png"
+        "picture": "./images/select-blue.png"
     },
     {
         "id": "B001",
@@ -45,7 +45,7 @@
         "price": 23900,
         "storage": "256GB",
         "network": "Wi-Fi",
-        "picture": "gray.png"
+        "picture": "./images/select-spacegray.png"
     },
     {
         "id": "B002",
@@ -53,7 +53,7 @@
         "price": 23900,
         "storage": "256GB",
         "network": "Wi-Fi",
-        "picture": "silver.png"
+        "picture": "./images/select-silver.png"
     },
     {
         "id": "B003",
@@ -61,7 +61,7 @@
         "price": 23900,
         "storage": "256GB",
         "network": "Wi-Fi",
-        "picture": "rose.png"
+        "picture": "./images/select-gold.png"
     },
     {
         "id": "B004",
@@ -69,7 +69,7 @@
         "price": 23900,
         "storage": "256GB",
         "network": "Wi-Fi",
-        "picture": "green.png"
+        "picture": "./images/select-green.png"
     },
     {
         "id": "B005",
@@ -77,7 +77,7 @@
         "price": 23900,
         "storage": "256GB",
         "network": "Wi-Fi",
-        "picture": "blue.png"
+        "picture": "./images/select-blue.png"
     },
     {
         "id": "C001",
@@ -85,7 +85,7 @@
         "price": 23200,
         "storage": "64GB",
         "network": "Cellular",
-        "picture": "gray.png"
+        "picture": "./images/select-spacegray.png"
     },
     {
         "id": "C002",
@@ -93,7 +93,7 @@
         "price": 23200,
         "storage": "64GB",
         "network": "Cellular",
-        "picture": "silver.png"
+        "picture": "./images/select-silver.png"
     },
     {
         "id": "C003",
@@ -101,7 +101,7 @@
         "price": 23200,
         "storage": "64GB",
         "network": "Cellular",
-        "picture": "rose.png"
+        "picture": "./images/select-gold.png"
     },
     {
         "id": "C004",
@@ -109,7 +109,7 @@
         "price": 23200,
         "storage": "64GB",
         "network": "Cellular",
-        "picture": "green.png"
+        "picture": "./images/select-green.png"
     },
     {
         "id": "C005",
@@ -117,7 +117,7 @@
         "price": 23200,
         "storage": "64GB",
         "network": "Cellular",
-        "picture": "blue.png"
+        "picture": "./images/select-blue.png"
     },
     {
         "id": "D001",
@@ -125,7 +125,7 @@
         "price": 28200,
         "storage": "256GB",
         "network": "Cellular",
-        "picture": "gray.png"
+        "picture": "./images/select-spacegray.png"
     },
     {
         "id": "D002",
@@ -133,7 +133,7 @@
         "price": 28200,
         "storage": "256GB",
         "network": "Cellular",
-        "picture": "silver.png"
+        "picture": "./images/select-silver.png"
     },
     {
         "id": "D003",
@@ -141,7 +141,7 @@
         "price": 28200,
         "storage": "256GB",
         "network": "Cellular",
-        "picture": "rose.png"
+        "picture": "./images/select-gold.png"
     },
     {
         "id": "D004",
@@ -149,7 +149,7 @@
         "price": 28200,
         "storage": "256GB",
         "network": "Cellular",
-        "picture": "green.png"
+        "picture": "./images/select-green.png"
     },
     {
         "id": "D005",
@@ -157,6 +157,6 @@
         "price": 28200,
         "storage": "256GB",
         "network": "Cellular",
-        "picture": "blue.png"
+        "picture": "./images/select-blue.png"
     }
 ]
