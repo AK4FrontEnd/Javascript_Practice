@@ -1,0 +1,13 @@
+[
+    {
+        "id": "A001",
+        "color": {
+            "colorName": "太空灰色",
+            "colorImg": "./images/spacegray.png"
+        },
+        "productImg": "./images/select-spacegray.png",
+        "storage": "64GB",
+        "network": "Wi-Fi",
+        "price": 18900
+    }
+]
