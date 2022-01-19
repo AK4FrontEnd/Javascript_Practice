@@ -137,7 +137,11 @@
                 roleVideoBtn.setAttribute('data-bs-target', `#video-${roleObject.roleId}`);
                 roleVideoModal.setAttribute('id', `video-${roleObject.roleId}`);
                 roleVideoModal.querySelector('.modal-title').innerText = `${roleObject.roleName}的影片`;
-                roleVideoModal.querySelector('.modal-body').innerHTML = `${roleObject.roleName}的影片`;
+                roleVideoModal.addEventListener('shown.bs.modal', function (event) {
+                // do something...
+                    roleVideoModal.querySelector('.modal-body').innerHTML = `<iframe width="400" height="300" src="https://www.youtube.com/embed/Qs1Fb_qtFio" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                })
+                
 
                 // tags                
                 roleObject.roleTags.forEach(item => {
