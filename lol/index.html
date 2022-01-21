@@ -28,6 +28,9 @@
                 </div>
                 <div class="col d-flex flex-wrap justify-content-center"></div>
             </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination m-4 justify-content-center"></ul>
+            </nav>
         </div>
         <template id="roleCard">
             <div class="card mx-1 my-2" style="max-width: 18rem;">
@@ -82,6 +85,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script>
+            let page = 1;
             let rolesData = [];
             let tagsArray = [];
             let col = document.querySelector('.col');
@@ -102,9 +106,14 @@
                 xhr.send();
 
                 // 關鍵字搜尋
-                keyWord.addEventListener('change', function(){
-                    let newArray = Object.values(resData).filter(x => x.name.includes(this.value));
-                    formatResult(newArray);
+                keywordsSearchBtn.addEventListener('click', function(){
+                    let newArray = Object.values(resData).filter(x => x.name.includes(keyWord.value));
+                    if(newArray){
+                        alert('無搜尋結果!');
+                        keyWord.value = '';
+                    }else{
+                        formatResult(newArray);
+                    }
                 })
             }
 
@@ -123,17 +132,59 @@
                     }
                     rolesData.push(role);
                 })
-                // console.log(rolesData);
-                // 卡片append
-                rolesData.forEach(role => {
-                    col.append(getCards(role));
+                createPagination(rolesData);
+                getPageData(rolesData);
+            }
+
+            function createPagination(rolesData){
+                document.querySelector('.pagination').innerHTML = '';
+                let pageCount = Math.ceil(rolesData.length / 12);
+                
+                // 產出頁碼條
+                for(let i = 1; i <= pageCount; i++){
+                    let pageLi = document.createElement('li');
+                    let pageBtn = document.createElement('button');
+
+                    pageLi.setAttribute('class', 'page-item mx-1');
+                    pageBtn.innerText = i;
+
+                    pageLi.append(pageBtn);
+                    document.querySelector('.pagination').append(pageLi);
+
+                    pageBtn.addEventListener('click', function(){
+                        page = this.innerText;
+                        getPageData(rolesData);
+                    })
+                }
+            }
+
+            function getPageData(rolesData){
+                col.innerHTML = '';
+                // 本頁卡片
+                for(let i = 0; i <= rolesData.length; i++){
+                    let firstIdx = 12 * (page - 1);
+                    let lastIdx = firstIdx + 11;
+                    if(i >= firstIdx && i <= lastIdx){
+                        console.log('true', firstIdx, lastIdx);
+                        col.append(getCards(rolesData[i]));
+                    }
+                }
+
+                // 現在是多少頁
+                let btnArray = document.querySelectorAll('.pagination>li>button');
+                btnArray.forEach(btn => {
+                    if(btn.innerText == page){
+                        btn.setAttribute('class', 'btn btn-dark')
+                    }else{
+                        btn.setAttribute('class', 'btn btn-outline-dark')
+                    }
                 })
             }
             
             function getCards(roleObject){
                 let cloneCard = cardTemplate.content.cloneNode(true);
                 
-                cloneCard.querySelector("img").src = roleObject.roleImg;
+                cloneCard.querySelector("img").src = roleObject?.roleImg;
                 cloneCard.querySelector("h5").innerText = roleObject.roleName;
                 
                 getInfoModal(cloneCard, roleObject);
