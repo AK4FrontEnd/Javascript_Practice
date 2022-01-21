@@ -108,7 +108,7 @@
                 // 關鍵字搜尋
                 keywordsSearchBtn.addEventListener('click', function(){
                     let newArray = Object.values(resData).filter(x => x.name.includes(keyWord.value));
-                    if(newArray){
+                    if(!newArray){
                         alert('無搜尋結果!');
                         keyWord.value = '';
                     }else{
