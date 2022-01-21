@@ -12,13 +12,20 @@
         }
     </style>
     <body>
-        <div class="container mx-auto">
+        <div class="container mx-auto mt-5">
+            <div class="filter">
+                <div class="search input-group mb-3">
+                    <input type="text" class="form-control" placeholder="請輸入英雄名稱" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">搜尋</button>
+                </div>
+                <div class="tags"></div>
+            </div>
             <div class="row">
                 <div class="col d-flex flex-wrap"></div>
             </div>
         </div>
         <template id="roleCard">
-            <div class="card mx-1 my-2 flex-grow-1" style="width: 14rem;">
+            <div class="card mx-1 my-2 flex-grow-1" style="width: 18rem;">
                 <img src="" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"></h5>
@@ -71,40 +78,43 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script>
             let rolesData = [];
+            let tagsArray = [];
             let col = document.querySelector('.col');
+            let resData;
             const cardTemplate = document.querySelector('#roleCard')
 
             window.onload = () => {
-                getRolesData();
-            }
-
-            function getRolesData(){
                 let xhr = new XMLHttpRequest();
-                let resData;
+                // let resData;
                 xhr.onload = function(){
                     resData = (JSON.parse(this.responseText)).data;
-                    Object.keys(resData).forEach(item => {
-                        let role = {
-                            roleId: resData[item].id,
-                            roleName: resData[item].name,
-                            roleImg: `https://opgg-static.akamaized.net/images/lol/${resData[item].image.group}/${resData[item].image.full}`,
-                            description: resData[item].blurb,
-                            roleInfo: resData[item].info,
-                            roleTags: resData[item].tags
-                        }
-                        rolesData.push(role);
-                    })
-                    // console.log(resData);
-                    console.log(rolesData);
-
-                    // 卡片append
-                    rolesData.forEach(role => {
-                        col.append(getCards(role));
-                    })
-                    
+                    getRolesData(resData);
+                    getAllTags(resData);
                 }
                 xhr.open("GET", "https://raw.githubusercontent.com/AK4FrontEnd/FileStorage/main/champion.json")
                 xhr.send();
+            }
+
+            function getRolesData(resData){
+                col.innerHTML = '';
+                rolesData = [];
+                Object.keys(resData).forEach(item => {
+                    let en = (resData[item].id).toLowerCase();
+                    let role = {
+                        roleId: resData[item].id,
+                        roleName: resData[item].name,
+                        roleImg: `https://cdngarenanow-a.akamaihd.net/webmain/static/pss/lol/items_splash/${en}_0.jpg`,
+                        description: resData[item].blurb,
+                        roleInfo: resData[item].info,
+                        roleTags: resData[item].tags
+                    }
+                    rolesData.push(role);
+                })
+                console.log(rolesData);
+                // 卡片append
+                rolesData.forEach(role => {
+                    col.append(getCards(role));
+                })
             }
             
             function getCards(roleObject){
@@ -113,17 +123,36 @@
                 cloneCard.querySelector("img").src = roleObject.roleImg;
                 cloneCard.querySelector("h5").innerText = roleObject.roleName;
                 
+                getInfoModal(cloneCard, roleObject);
+                getVideoModal(cloneCard, roleObject);
+                
+                // tags                
+                roleObject.roleTags.forEach(item => {
+                    let tag = document.createElement('a');
+                    tag.setAttribute('class', 'tag btn btn-outline-secondary btn-sm me-1 mb-4');
+                    tag.setAttribute('href', '#');
+                    tag.setAttribute('role', 'button');
+                    tag.innerText = item
+
+                    cloneCard.querySelector('.tag-group').append(tag);
+                })
+                return cloneCard;
+            }
+
+            function getInfoModal(cloneCard, roleObject){
                 let roleInfoBtn = cloneCard.querySelector('.info-btn');
                 let roleInfoModal = cloneCard.querySelector('.info-modal');
-                let roleVideoBtn = cloneCard.querySelector('.video-btn');
-                let roleVideoModal = cloneCard.querySelector('.video-modal');
+                let body = roleInfoModal.querySelector('.modal-body');
                 let infoUl = document.createElement('ul');
-                
-                // info modal
+
                 roleInfoBtn.setAttribute('data-bs-target', `#info-${roleObject.roleId}`);
                 roleInfoModal.setAttribute('id', `info-${roleObject.roleId}`);
                 roleInfoModal.querySelector('.modal-title').innerText = `${roleObject.roleName}的詳細資訊`;
-                roleInfoModal.querySelector('.modal-body').innerText = `${roleObject.description}`;
+
+                body.append(document.createElement('img'), document.createElement('p'));
+                body.querySelector('img').src = roleObject.roleImg;
+                body.querySelector('img').setAttribute('class', 'w-100');
+                body.querySelector('p').innerText = `${roleObject.description}`;
 
                 Object.keys(roleObject.roleInfo).forEach(key => {
                     let li = document.createElement('li');
@@ -132,30 +161,57 @@
                     infoUl.append(li);
                 })
                 roleInfoModal.querySelector('.modal-body').append(infoUl);
+            }
 
-                // Video modal
+            function getVideoModal(cloneCard, roleObject){
+                let roleVideoBtn = cloneCard.querySelector('.video-btn');
+                let roleVideoModal = cloneCard.querySelector('.video-modal');
+
                 roleVideoBtn.setAttribute('data-bs-target', `#video-${roleObject.roleId}`);
                 roleVideoModal.setAttribute('id', `video-${roleObject.roleId}`);
                 roleVideoModal.querySelector('.modal-title').innerText = `${roleObject.roleName}的影片`;
                 roleVideoModal.addEventListener('shown.bs.modal', function (event) {
-                // do something...
                     roleVideoModal.querySelector('.modal-body').innerHTML = `<iframe width="400" height="300" src="https://www.youtube.com/embed/Qs1Fb_qtFio" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
                 })
-                
-
-                // tags                
-                roleObject.roleTags.forEach(item => {
-                    let tag = document.createElement('a');
-                    tag.setAttribute('class', 'btn btn-outline-secondary btn-sm me-1 mb-4');
-                    tag.setAttribute('href', '#');
-                    tag.setAttribute('role', 'button');
-                    tag.innerText = item
-
-                    cloneCard.querySelector('.tag-group').append(tag);
+            }
+            
+            function getAllTags(resData){
+                let tagsWrap = document.querySelector('.tags');
+                Object.keys(resData).forEach(key => {
+                    resData[key].tags.forEach(tag => {
+                        if(!tagsArray.includes(tag)){
+                            tagsArray.push(tag);
+                        }
+                    })
                 })
 
+                tagsArray.forEach(tag => {
+                    let btn = document.createElement('button');
+                    btn.innerText = tag;
+                    btn.setAttribute('type', 'button');
+                    btn.setAttribute('class', 'tag btn btn-outline-secondary mx-1');
 
-                return cloneCard;
+                    tagsWrap.append(btn);
+                })
+
+                document.querySelectorAll('.tags>button').forEach( tag => {
+                    tag.addEventListener('click', function(){
+                        getFilterResult('tags', this.innerText);
+                })})
+            }
+
+            function getFilterResult(filterBy, keywords){
+                console.log(filterBy, keywords);
+                let objArray = Object.values(resData);
+                let newArray = objArray.filter(x => x[filterBy].includes(keywords));
+                
+                // console.log(newArray);
+                formatResult(newArray);
+            }
+
+            function formatResult(array){
+                let res = array.reduce((arr, item) => ({ ...arr, [item.id]: item}), {}) ;
+                getRolesData(res);
             }
         </script>
     </body>
