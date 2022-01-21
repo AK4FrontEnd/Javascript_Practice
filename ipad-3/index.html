@@ -143,10 +143,11 @@
                             selectArray = data.productList.filter(x => x.colorName == colorSelect && x.storage == storageSelect && x.network == networkSelect);
                             wifiPrice.innerText = `NT ${selectArray[0].price} 起`;
                             cellularPrice.innerText = `NT ${selectArray[0].price + 4300} 起`;
+                            totalPrice.innerText = `NT ${selectArray[0].price} 起`;
                         }else{
                             networkSelect = this.dataset.spec;
                             selectArray = data.productList.filter(x => x.colorName == colorSelect && x.storage == storageSelect && x.network == networkSelect);
-                            totalPrice.innerText = `NT ${selectArray[0].price} 起`;
+                            totalPrice.innerText = `NT ${selectArray[0].price}`;
                         }
                     })
                 })
