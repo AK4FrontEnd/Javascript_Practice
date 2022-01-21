@@ -116,9 +116,12 @@
                 let arr =[random];
                 while(arr.length < 4){
                     random = Math.floor(Math.random() * (max - min + 1) + min)
-                    if((arr.find(x => x == random)) == undefined){
+                    if(!arr.includes(random)){
                         arr.push(random);
                     }
+                    // if((arr.find(x => x == random)) == undefined){
+                    //     arr.push(random);
+                    // }
                 }
                 return parseInt(arr.join(''));
             }

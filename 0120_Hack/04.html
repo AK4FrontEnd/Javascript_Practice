@@ -159,7 +159,7 @@
                 // 產出這個月月曆所以天數的表格
                 arr = (arrLastMonth.concat(arrThisMonth)).concat(arrNextMonth);
 
-                // 產出案為陣列
+                // 產出二維陣列
                 let newArr = [];
                 arr.forEach((item, index) => {
                     if(newArr.length <= 6){
@@ -223,7 +223,7 @@
                     }
                 }
 
-                dateOne = new Date(2022, month, 1);
+                dateOne = new Date(thisYear, month, 1);
                 dateOneOfWeek = dateOne.getDay();
 
                 h1.innerText = months[month];
