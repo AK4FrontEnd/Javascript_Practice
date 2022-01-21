@@ -285,7 +285,8 @@
 
                         td.addEventListener('click', function(){
                             getSchedule(td, ul);
-                        })
+                            e.stopPropagation();
+                        },true)
                     }else{
                         td.addEventListener('click', function(){
                             addEvent();
