@@ -13,19 +13,24 @@
     </style>
     <body>
         <div class="container mx-auto mt-5">
-            <div class="filter">
-                <div class="search input-group mb-3">
-                    <input type="text" class="form-control" placeholder="請輸入英雄名稱" aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">搜尋</button>
-                </div>
-                <div class="tags"></div>
-            </div>
             <div class="row">
-                <div class="col d-flex flex-wrap"></div>
+                <div class="filter my-4">
+                    <div class="search input-group mb-3">
+                        <input type="text" class="form-control keywordInput" placeholder="請輸入英雄名稱" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-keyword">搜尋</button>
+                        <!-- 
+                            <datalist id="datalistOptions">
+                                <option value="San Francisco">
+                            </datalist>
+                        -->
+                    </div>
+                    <div class="tags"></div>
+                </div>
+                <div class="col d-flex flex-wrap justify-content-center"></div>
             </div>
         </div>
         <template id="roleCard">
-            <div class="card mx-1 my-2 flex-grow-1" style="width: 18rem;">
+            <div class="card mx-1 my-2" style="max-width: 18rem;">
                 <img src="" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"></h5>
@@ -81,7 +86,9 @@
             let tagsArray = [];
             let col = document.querySelector('.col');
             let resData;
-            const cardTemplate = document.querySelector('#roleCard')
+            const cardTemplate = document.querySelector('#roleCard');
+            let keywordsSearchBtn = document.querySelector('#button-keyword');
+            let keyWord = document.querySelector('.keywordInput');
 
             window.onload = () => {
                 let xhr = new XMLHttpRequest();
@@ -93,6 +100,12 @@
                 }
                 xhr.open("GET", "https://raw.githubusercontent.com/AK4FrontEnd/FileStorage/main/champion.json")
                 xhr.send();
+
+                // 關鍵字搜尋
+                keyWord.addEventListener('change', function(){
+                    let newArray = Object.values(resData).filter(x => x.name.includes(this.value));
+                    formatResult(newArray);
+                })
             }
 
             function getRolesData(resData){
@@ -110,7 +123,7 @@
                     }
                     rolesData.push(role);
                 })
-                console.log(rolesData);
+                // console.log(rolesData);
                 // 卡片append
                 rolesData.forEach(role => {
                     col.append(getCards(role));
@@ -196,17 +209,9 @@
 
                 document.querySelectorAll('.tags>button').forEach( tag => {
                     tag.addEventListener('click', function(){
-                        getFilterResult('tags', this.innerText);
+                        let newArray = Object.values(resData).filter(x => x.tags.includes(this.innerText));
+                        formatResult(newArray);
                 })})
-            }
-
-            function getFilterResult(filterBy, keywords){
-                console.log(filterBy, keywords);
-                let objArray = Object.values(resData);
-                let newArray = objArray.filter(x => x[filterBy].includes(keywords));
-                
-                // console.log(newArray);
-                formatResult(newArray);
             }
 
             function formatResult(array){
