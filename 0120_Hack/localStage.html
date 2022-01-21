@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <title>Hello, world!</title>
+    </head>
+    <body>
+        <input type="text">
+        <button id="btn1">存檔</button>
+        <button id="btn2">讀取</button>
+        <p>讀取文字</p>
+        <p id="p">(Annie)</p>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+            let obj = {
+                name: 'Annie',
+                gender: false
+            }
+            
+            document.querySelector('#btn1').onclick = function(){
+                let val = document.querySelector('input').value;
+                localStorage.setItem('A1', val); //(key, value) 不能存除了字串以外的東西
+
+                localStorage.setItem('Annie', JSON.stringify(obj))
+            }
+            document.querySelector('#btn2').onclick = function(){
+                let val = localStorage.getItem('A1');
+                document.querySelector('p').innerText = val;
+
+                let Annie = JSON.parse(localStorage.getItem('Annie'));
+                document.querySelector('#p').innerText = `姓名:${Annie.name}`;
+            }
+        </script>
+    </body>
+</html>

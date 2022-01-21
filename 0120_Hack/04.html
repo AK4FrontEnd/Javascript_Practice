@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <title>Hello, world!</title>
+    </head>
+    <style>
+        table{
+            width: 80%;
+        }
+        .dateCell{
+            max-height: 150px;
+            height: 150px;
+            width: 14.2857143%;
+        }
+        .dateCell ul{
+            max-height: 75px;
+            overflow-y: hidden;
+        }
+        .addEvent{
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-size: 28px;
+            line-height: 60px;
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            box-shadow: 5px 5px 15px rgba(0,0,0, .5);
+        }
+        td:hover{
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+    </style>
+    <body>
+        <div class="container my-4">
+            <div class="heading d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-outline-dark mx-4" id='prev'>Prev</button>
+                <h1 class="month me-3"></h1>
+                <h5 class="year"></h5>
+                <button type="button" class="btn btn-outline-dark mx-4" id="next">Next</button>
+            </div>
+            <div class="calendar-table">
+            </div>
+            <div class="addEvent btn btn-success">+</div>
+        </div>
+        <!-- Modal: addEvent -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5  class="modal-title" id="exampleModalLabel">新增事件</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">事由</label>
+                        <input class="form-control" id="exampleFormControlInput1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">日期</label>
+                        <input type="date" id="eventDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">說明</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitEvent">Save changes</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- Modal: getSchedule -->
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5  class="modal-title" id="exampleModalLabel2"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group list-group-flush"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+            let title, table;
+            let calendarArray = [];
+            let submit;
+            let eventData =[];
+
+            // 預設
+            let howMuchDay;
+            let today = new Date();
+            let thisYear =today.getFullYear();
+            let month = today.getMonth();
+            let dateOne = new Date(2022, month, 1);
+            let dateOneOfWeek = dateOne.getDay();
+            let tHead = ['Sun', 'Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat'];
+            let months = ['Jan', 'Fab', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            let addEventBtn, h1, h5;
+            
+        </script>
+        <script type="module">
+            import { select, createEl, createTable, createRows } from './helpers.js';
+
+            title = select('.heading');
+            table = select('.calendar-table');
+            submit = select('#submitEvent');
+            addEventBtn = select('.addEvent');
+
+
+            window.onload = function(){
+                h1 = select('.month');
+                h5 = select('.year');
+
+                h1.innerText = months[month];
+                h5.innerText = thisYear;
+                getCalendarArray(thisYear, month, dateOne, dateOneOfWeek);
+
+                // 換月份
+                select('#prev').addEventListener('click', function(){
+                    goMonth(this.attributes[2].value);
+                })
+                select('#next').addEventListener('click', function(){
+                    goMonth(this.attributes[2].value);
+                })
+            
+                // 新增事件
+                submit.addEventListener('click', addEvent);
+            }
+
+            function getCalendarArray(thisYear, month, dateOne, dateOneOfWeek){
+                let arr = [];
+                
+                // 上個月最後幾天
+                let arrLastMonth = Array(dateOneOfWeek).fill().map((value, index) => '');
+
+                // 這個月幾天
+                howMuchDay = (new Date(thisYear,(month + 1),0)).getDate();
+                let arrThisMonth = Array(howMuchDay).fill().map((value, index) => index + 1);
+
+                // 下個月頭幾天
+                let day = (new Date(thisYear,(month + 2),howMuchDay)).getDay();
+                let arrNextMonth = Array(6 - day).fill().map((value, index) => '');
+
+                // 產出這個月月曆所以天數的表格
+                arr = (arrLastMonth.concat(arrThisMonth)).concat(arrNextMonth);
+
+                // 產出案為陣列
+                let newArr = [];
+                arr.forEach((item, index) => {
+                    if(newArr.length <= 6){
+                        newArr.push(item);
+                    }else{
+                        calendarArray.push(newArr);
+                        newArr = [];
+                        newArr.push(item);
+                    }
+                })
+                if(newArr != []){
+                    calendarArray.push(newArr);
+                }
+
+                // 製作表格
+                let newTable = createTable(tHead, calendarArray);
+                table.append(newTable);
+                calendarArray = [];
+                getTableStyle();
+
+                getEvents(thisYear, month);
+            }
+
+            function getTableStyle(){
+                let newTable = select('table');
+                let thead = select('thead');
+                let tbody = select('tbody');
+                let trArray = select('tr');
+                let tdArray = select('td');
+
+                newTable.setAttribute('class', 'mt-2 mx-auto table')
+
+                addEventBtn.setAttribute('data-bs-toggle', "modal");
+                addEventBtn.setAttribute('data-bs-target', "#exampleModal");
+
+                tdArray.forEach((td, index) => {
+                    let mon = (month + 1).toString().padStart(2, "0");
+                    let day = (td.innerText).toString().padStart(2, "0");
+                    td.classList.add('dateCell');
+                    td.setAttribute('data-date', `${thisYear}-${mon}-${day}`)
+                    td.append(createEl('ul'));
+                })
+            }
+
+            function goMonth(toWhere){
+                if(toWhere == 'prev'){
+                    table.innerHTML = '';
+                    if(month != 0){
+                        month--;
+                    }else{
+                        thisYear--;
+                        month = 11;
+                    }
+                }else{
+                    table.innerHTML = '';
+                    if(month != 11){
+                        month++;
+                    }else{
+                        thisYear++;
+                        month = 0;
+                    }
+                }
+
+                dateOne = new Date(2022, month, 1);
+                dateOneOfWeek = dateOne.getDay();
+
+                h1.innerText = months[month];
+                h5.innerText = thisYear;
+
+                getCalendarArray(thisYear, month, dateOne, dateOneOfWeek);
+            }
+            
+            function addEvent(){
+                bootstrap.Modal.getOrCreateInstance(select('#exampleModal')).show();
+                let event = {
+                    id: select('#eventDate').value,
+                    events: [
+                        {
+                            date: select('#eventDate').value,
+                            title: select('#exampleFormControlInput1').value,
+                            description: select('#exampleFormControlTextarea1').value
+                        }
+                    ]
+                }
+                eventData.push(event);
+                postEvent(event);
+                select('#eventDate').value = '';
+                select('#exampleFormControlInput1').value = '';
+                select('#exampleFormControlTextarea1').value = '';
+            }
+
+            function postEvent(event){
+                bootstrap.Modal.getOrCreateInstance(select('#exampleModal')).hide();
+                
+                if((localStorage.getItem(event.id)) == undefined){
+                    localStorage.setItem(event.id, JSON.stringify(eventData.find( x => x.id == event.id)));
+                }else{
+                    let data = JSON.parse((localStorage.getItem(event.id)));
+                    (data.events).push(event.events[0]);
+                    localStorage.setItem(event.id, JSON.stringify(data));
+                }
+                getEvents(thisYear, month);
+            }
+
+            function getEvents(thisYear, month){
+                let tdArray = select('td');
+                let mon = (month + 1).toString().padStart(2, "0");
+
+                tdArray.forEach(td => {
+                    let day = (td.innerText).toString().padStart(2, "0");
+                    let tdDate = td.dataset.date;
+                    let event = JSON.parse(localStorage.getItem(tdDate));
+                    let ul = td.querySelector('ul');
+
+                    ul.innerHTML = '';
+
+                    if(event != undefined){
+                        event.events.forEach(item => {
+                            let li = createEl('li');
+                            li.innerText = item.title;
+                            ul.append(li);
+                        })
+
+                        td.addEventListener('click', function(){
+                            getSchedule(td, ul);
+                        })
+                    }else{
+                        td.addEventListener('click', function(){
+                            addEvent();
+                        })
+                    }
+                })
+            }
+            
+            function getSchedule(td, ul){
+                select('.list-group').innerHTML = '';
+                let modal = select('#exampleModal2');
+                let eventArr = ul.querySelectorAll('li');
+
+                td.setAttribute('data-bs-toggle','modal');
+                td.setAttribute('data-bs-target','#exampleModal2');
+
+                modal.querySelector('.modal-title').innerHTML = td.dataset.date;
+
+                eventArr.forEach(event => {
+                    let li = createEl('li');
+                    li.setAttribute('class', 'list-group-item');
+                    li.innerText = event.innerText;
+                    select('.list-group').append(li);
+                })
+            }
+        </script>
+    </body>
+</html>

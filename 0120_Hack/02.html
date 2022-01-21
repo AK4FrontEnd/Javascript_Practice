@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <title>幾A幾B</title>
+        <style>
+            .container{
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .btn-group{
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .list-group{
+                min-height: 100px;
+                border: 1px solid rgba(150, 150, 150, 0.363);
+                margin-bottom: 20px;
+                margin-top: -10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <button type="button" class="btn btn-outline-primary start-game">開始</button>
+                        <button type="button" class="btn btn-outline-primary restart">放棄重來</button>
+                        <button type="button" class="btn btn-outline-primary seeResult">看答案</button>
+                    </div>
+                    <p>挑戰紀錄：</p>
+                    <ul class="list-group">
+                    </ul>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control input-number" placeholder="輸入數字" aria-label="Recipient's username" aria-describedby="submit">
+                        <button class="btn btn-outline-secondary" type="button" id="submit">猜答案</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <template id="wrong">
+            <li class="list-group-item">
+                <span class="badge bg-danger">0A0B</span>
+                <span class="answer">1234</span>
+            </li>
+        </template>
+        <template id="success">
+            <li class="list-group-item">
+                <span class="badge bg-success">4A0B</span>
+                <span class="answer">1234</span>
+            </li>
+        </template>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+            let result = 0;
+            let answer, input, ul;
+        </script>
+        <script type="module">
+            import { select, createEl, tryParseInt, tryNumRepeat } from './helpers.js';
+
+            window.onload = function(){
+                ul = select('.list-group');
+                input = select('.input-number');
+
+                // 遊戲開始
+                select('button.start-game').addEventListener('click', () => {
+                    result = getRandom();
+                    console.log(result);
+                });
+
+                // 送出猜的數字
+                select('#submit').addEventListener('click', () => {
+                    if(result == 0){
+                        alert('請按「開始」鈕開始遊戲')
+                    }else{
+                        let tryParseRes = tryParseInt(input.value);
+                        if(tryParseRes){
+                            getResult(input.value);
+                        }else{
+                            input.value = '';
+                        }
+                    }
+                })
+
+                // restart
+                select('.restart').addEventListener('click', () => {
+                    if(result == 0){
+                        alert('請按「開始」鈕開始遊戲')
+                    }else{
+                        select('.list-group').innerHTML = '';
+                        result = 0;
+                    }
+                })
+
+                // seeResult
+                select('.seeResult').addEventListener('click', () => {
+                    if(result == 0){
+                        alert('請按「開始」鈕開始遊戲')
+                    }else{
+                        alert(result);
+                    }
+                })
+            }
+
+            function getRandom(){
+                let min = Math.ceil(1);
+                let max = Math.floor(9);
+                let random = Math.floor(Math.random() * (max - min + 1) + min);
+                let arr =[random];
+                while(arr.length < 4){
+                    random = Math.floor(Math.random() * (max - min + 1) + min)
+                    if((arr.find(x => x == random)) == undefined){
+                        arr.push(random);
+                    }
+                }
+                return parseInt(arr.join(''));
+            }
+
+            function getResult(answer){
+                let A = 0;
+                let B = 0;
+
+                let res = result.toString();
+                let resArr = [...res];
+                let ansArr = [...answer]
+
+                for(let i = 0; i < 4; i++){
+                    let ansNum = ansArr[i];
+                    let resNum = resArr[i];
+
+                    if(ansNum == resNum){
+                        A++;
+                    }else{
+                        for(let j = 0; j < 4; j++){
+                            resNum = resArr[j];
+                            if(ansNum == resNum){
+                                B++;
+                            }
+                        }
+                    }
+                }
+                ul.append(getList(answer, A, B));
+            }
+
+            function getList(answer, A, B){
+                let list;
+
+                if(A != 4){
+                    list = select('#wrong').content.cloneNode(true);
+                }else{
+                    list = select('#success').content.cloneNode(true);
+                    alert('win');
+                }
+
+                input.value = '';
+                list.querySelector('.badge').innerText = `${A}A${B}B`;
+                list.querySelector('.answer').innerText = answer;
+                return list;
+            }
+        </script>
+    </body>
+</html>
