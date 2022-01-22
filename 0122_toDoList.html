@@ -24,13 +24,13 @@
                 background-color: #fff;
                 border: 2px solid #4B4B4B;
             }
-            #addEventbutton{
+            #addToDoButton{
                 background-color: #E4768D;
                 border: 2px solid #4B4B4B;
                 color: #4B4B4B;
                 font-weight: 800;
             }
-            #addEventbutton:hover{
+            #addToDoButton:hover{
                 background-color: #4B4B4B;
                 color: #E4768D;
             }
@@ -108,13 +108,13 @@
                 <div class="col col-9 flex-grow-1">
                     <div class="input-group mb-5">
                         <span class="input-group-text">Title</span>
-                        <input type="text" class="form-control" placeholder="ToDo" aria-label="Event" aria-describedby="addEventbutton">
+                        <input type="text" class="form-control title-input" placeholder="ToDo" aria-label="Event" aria-describedby="addToDoButton">
                         <span class="input-group-text">Deadline</span>
-                        <input type="date" class="form-control" value="2013-01-08" aria-label="Date" aria-describedby="addEventbutton">
+                        <input type="date" class="form-control date-input" aria-label="Date" aria-describedby="addToDoButton">
                     </div>
                 </div>
                 <div class="col">
-                    <button class="d-block btn ms-auto" type="button" id="addEventbutton">Add ToDo</button>
+                    <button class="d-block btn ms-auto" type="button" id="addToDoButton">Add ToDo</button>
                 </div>
             </div>
             <div class="row">
@@ -146,5 +146,51 @@
         </template>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+            let title, deadline;
+
+            window.onload = function(){
+                document.querySelector('#addToDoButton').addEventListener('click', function(){
+                    title = document.querySelector('.title-input');
+                    deadline = document.querySelector('.date-input');
+                    postToDo(title.value, deadline.value);
+                })
+            }
+
+            function postToDo(titleStr, deadlineDate){
+                // 1. 防呆：判斷是否有資料未填寫
+                if(titleStr == '' || deadlineDate == ''){
+                    alert('請輸入標題與日期');
+                }else{
+                    // 2. 將輸入的待辦名稱與日期資料存成事先設計好的資料結構
+                    let obj = {
+                        "deadline": deadlineDate,
+                        "expired": false,
+                        "list":[
+                            {
+                                "title": titleStr,
+                                "finished": false
+                            }
+                        ]
+                    }
+                    // 3. 存進 Local Storage
+                    localStorage.setItem(deadlineDate, JSON.stringify(obj));
+                    // 4. 清空 input 資料
+                    title.value = '';
+                    deadline.value = '';
+                }
+            }
+
+            function isExpired(deadline){
+                let today = new Date();
+                let deadlineDate = new Date(deadline);
+                console.log(dates.compare(today,formatDate(deadlineDate)));
+            }
+
+            function formatDate(date){
+                let formatted_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+                return formatted_date;
+            }
+        </script>
     </body>
 </html>
