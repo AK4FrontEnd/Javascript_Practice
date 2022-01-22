@@ -31,7 +31,7 @@
             document.getElementsByTagName('h1')[0].innerText = 'pokemon圖鑑列表';
             let fileNum = '001';
             let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
-            let pokemonImg = `<img src="${imgUrl}">`;
+            let pokemonImg = `<img src="${imgUrl}" loading="lazy">`;
 
             container.innerHTML = pokemonImg;
         }
@@ -51,7 +51,7 @@
             for(let i = 1; i < 89; i++){
                 let fileNum = i.toString().padStart(3,'0');
                 let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
-                let pokemonImg = `<img src="${imgUrl}">`;
+                let pokemonImg = `<img src="${imgUrl}" loading="lazy">`;
                 pokemons += pokemonImg;
 
                 container.innerHTML = pokemons;
@@ -67,7 +67,7 @@
             for(let i = 1; i < 89; i++){
                 let fileNum = i.toString().padStart(3,'0');
                 let imgUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileNum}.png`;
-                let pokemonImg = `<img src="${imgUrl}">`;
+                let pokemonImg = `<img src="${imgUrl}" loading="lazy">`;
                 pokemons += pokemonImg;
 
                 container.innerHTML = pokemons;
@@ -89,6 +89,7 @@
 
                 let img = document.createElement('img');
                 img.src = imgUrl;
+                img.setAttribute('loading', 'lazy')
                 
                 container.appendChild(img);
                 // img.addEventListener("click", removeImg);
