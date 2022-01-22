@@ -114,7 +114,9 @@
             <div class="row">
                 <div class="filter my-4">
                     <div class="search input-group mb-3">
-                        <input type="text" class="keywordInput" placeholder="請輸入英雄名稱" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input type="text"  list="datalistOptions" class="keywordInput" placeholder="請輸入英雄名稱" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <datalist id="datalistOptions" class="datalist">
+                        </datalist>
                         <button type="button" id="button-keyword"><i class="fas fa-search"></i></button>
                     </div>
                     <div class="tags"></div>
@@ -199,14 +201,30 @@
                 xhr.open("GET", "https://raw.githubusercontent.com/AK4FrontEnd/FileStorage/main/champion.json")
                 xhr.send();
 
-                // 關鍵字搜尋
+                // 關鍵字搜尋(按下搜尋鍵)
                 keywordsSearchBtn.addEventListener('click', function(){
                     let newArray = Object.values(resData).filter(x => x.name.includes(keyWord.value));
-                    if(!newArray){
+                    console.log(newArray);
+                    if(newArray.length == 0){
                         alert('無搜尋結果!');
                         keyWord.value = '';
                     }else{
                         formatResult(newArray);
+                    }
+                })
+
+                // 關鍵字搜尋 input事件
+                keyWord.addEventListener('input', function(){
+                    let datalistWrap = document.querySelector('#datalistOptions');
+                    let key = this.value;
+                    let newArray = Object.values(resData).filter(x => x.name.includes(key));
+                    datalistWrap.innerHTML = '';
+                    if(newArray.length > 0){
+                        newArray.forEach(obj => {
+                            let item = document.createElement('option');
+                            item.value = obj.name;
+                            datalistWrap.append(item);
+                        })
                     }
                 })
             }
@@ -279,7 +297,7 @@
                 let cloneCard = cardTemplate.content.cloneNode(true);
                 
                 cloneCard.querySelector("img").src = roleObject?.roleImg;
-                cloneCard.querySelector("h5").innerText = roleObject.roleName;
+                cloneCard.querySelector("h5").innerText = roleObject?.roleName;
                 
                 getInfoModal(cloneCard, roleObject);
                 getVideoModal(cloneCard, roleObject);
