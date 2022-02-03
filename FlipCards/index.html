@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./reset.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="./style.css">
+        <title>Find Princess!</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <button class="start-btn">START</button>
+                </div>
+            </div>
+            <div class="row justify-content-between">
+                <button class="flip-card col-2" card-id="0">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="1">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="2">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="3">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="4">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="5">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="6">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="7">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="8">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="9">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="10">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+                <button class="flip-card col-2" card-id="11">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-back">
+                            <img src="" alt="">
+                        </div>
+                        <div class="flip-card-front">
+                            <img src="./images/back.jpg" alt="">
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <footer>
+            <p>The Cards are Designed by <a href="https://www.popdaily.com.tw/user/191651">Poolala</a></p>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+            let cards;
+            let selectAns = [];
+            let selectCards = [];
+            let times = 0;
+            let gameStart = false;
+            window.onload = function(){
+                cards = document.querySelectorAll('[card-id]');
+                cardArray = Array.from(Array(12).keys());
+                createCards(cardArray);
+                
+                document.querySelector('.start-btn').addEventListener('click', ()=>{
+                    document.querySelectorAll('.flip-card-inner').forEach(item => {
+                        item.style.transform = 'rotateY(0deg)';
+                    })
+                    setTimeout(() => {
+                        gameStart = true;
+                        createCards(shuffle());
+                    }, 800);
+                })
+            }
+            function createCards(cardArray){
+                cards.forEach((card, index) => {
+                    let id = card.getAttributeNode('card-id').value;
+                    let img = card.querySelector('.flip-card-back>img');
+                    img.src = `./images/${cardArray[id]}.jpg`;
+                    if(gameStart){
+                        card.addEventListener('click', selectCard)
+                    }
+                })
+            }
+            function shuffle() {
+                let array = Array.from(Array(12).keys());
+                for (let i = array.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array
+            }
+            function selectCard(){
+                if(selectAns.length < 2){
+                    this.querySelector('.flip-card-inner').style.transform = 'rotateY(180deg)';
+                    let url = this.querySelector('.flip-card-back>img').src;
+                    let imgNum = url.slice((url.indexOf('images/') + 7),url.indexOf('.jpg'));
+                    if(!selectAns.includes(imgNum)){
+                        selectAns.push(imgNum);
+                        selectCards.push(this)
+                    }
+                    console.log(selectAns, selectCards)
+                }
+                if(selectAns.length == 2){
+                    if((parseInt(selectAns[0]) + 6) == parseInt(selectAns[1]) || (parseInt(selectAns[1]) + 6) == parseInt(selectAns[0])){
+                        selectCardSame();
+                    }else{
+                        selectCardDifferent();
+                    }
+                }
+            }
+            function selectCardSame(){
+                setTimeout(() => {
+                    selectCards = [];
+                    selectAns = [];
+                    times ++
+                    if(times == 6){
+                        alert('finish')
+                    }
+                }, 800);
+            }
+            function selectCardDifferent(){
+                setTimeout(() => {
+                    selectCards.forEach(item => {
+                        item.querySelector('.flip-card-inner').style.transform = 'rotateY(0deg)';
+                    })
+                    selectCards = [];
+                    selectAns = [];
+                }, 800);
+            }
+        </script>
+    </body>
+</html>
