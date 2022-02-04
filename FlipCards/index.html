@@ -202,6 +202,10 @@
             }
             function selectCardSame(){
                 setTimeout(() => {
+                        console.log(selectCards)
+                    selectCards.forEach(card => {
+                        card.removeEventListener('click', selectCard);
+                    })
                     selectCards = [];
                     selectAns = [];
                     times ++
